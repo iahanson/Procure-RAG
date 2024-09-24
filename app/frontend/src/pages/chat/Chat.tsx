@@ -3,7 +3,7 @@ import { Checkbox, Panel, DefaultButton, TextField, ITextFieldProps, ICheckboxPr
 import { SparkleFilled } from "@fluentui/react-icons";
 import { useId } from "@fluentui/react-hooks";
 import readNDJSONStream from "ndjson-readablestream";
-
+import rbkc_logo from "../../assets/RBKC.png";
 import styles from "./Chat.module.css";
 
 import {
@@ -36,6 +36,7 @@ import { TokenClaimsDisplay } from "../../components/TokenClaimsDisplay";
 import { GPT4VSettings } from "../../components/GPT4VSettings";
 import { toolTipText } from "../../i18n/tooltips.js";
 import { LoginContext } from "../../loginContext";
+import { Tips } from "../../components/Tips";
 
 const Chat = () => {
     const [isConfigPanelOpen, setIsConfigPanelOpen] = useState(false);
@@ -343,7 +344,8 @@ const Chat = () => {
                 <div className={styles.chatContainer}>
                     {!lastQuestionRef.current ? (
                         <div className={styles.chatEmptyState}>
-                            <SparkleFilled fontSize={"120px"} primaryFill={"rgba(115, 118, 225, 1)"} aria-hidden="true" aria-label="Chat logo" />
+                            {/* <SparkleFilled fontSize={"120px"} primaryFill={"rgba(115, 118, 225, 1)"} aria-hidden="true" aria-label="Chat logo" /> */}
+                            <img width="auto" height="10%" src={rbkc_logo}></img>
                             {/* <img
                                 src={prompt_ad}
                                 alt="prompt advice"
@@ -356,7 +358,8 @@ const Chat = () => {
 
                             <h3 className={styles.chatEmptyStateSubtitle}>
                                 <b>Caution</b>: all content is generated from a large language model and must be check by a human! You are responsible for any
-                                decisions made. <br></br>Read the{" "}
+                                decisions made.{" "}
+                                {/* <br></br>Read the{" "}
                                 <a href="https://officesharedservice.sharepoint.com/sites/RBKCAIHub/SitePages/Resources.aspx" target="_blank">
                                     guidelines
                                 </a>{" "}
@@ -370,7 +373,8 @@ const Chat = () => {
                                     {" "}
                                     here.
                                 </a>
-                                <br></br>Not getting the response you expected? Try altering your prompt - learn more{" "}
+                                <br></br>Not getting the response you expected? Try altering your prompt - learn more{" "} */}
+                                {/* already commented out */}
                                 {/* <a
                                     href="https://officesharedservice.sharepoint.com/:b:/r/sites/RBKCAIHub/Shared%20Documents/AI%20Builder%20Prompting%20Guide.pdf?csf=1&web=1&e=gtqXwe"
                                     target="_blank"
@@ -389,13 +393,15 @@ const Chat = () => {
                                 >
                                     here2
                                 </a> */}
-                                <a
+                                {/* end of already commented out */}
+                                {/* <a
                                     href="https://officesharedservice.sharepoint.com/:b:/r/sites/RBKCAIHub/Shared%20Documents/AI%20Builder%20Prompting%20Guide.pdf#page=3?csf=1&web=1&e=1aF1Ts"
                                     target="_blank"
                                 >
                                     here
-                                </a>{" "}
+                                </a>{" "} */}
                             </h3>
+                            <Tips />
                             <h2 className={styles.chatEmptyStateSubtitle}>Ask anything or try an example</h2>
                             <ExampleList onExampleClicked={onExampleClicked} useGPT4V={useGPT4V} />
                         </div>

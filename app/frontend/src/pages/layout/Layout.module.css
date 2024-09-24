@@ -5,7 +5,7 @@
 }
 
 .header {
-    background-color: #222222;
+    background-color: #203864;
     color: #f2f2f2;
 }
 
@@ -26,7 +26,7 @@
 }
 
 .headerLogo {
-    height: 40px;
+    height: 35px;
 }
 
 .headerTitle {
@@ -61,6 +61,7 @@
 
 .headerNavLeftMargin {
     margin-left: 20px;
+    color: inherit;
 }
 
 .headerRightText {
@@ -76,4 +77,6 @@
 .rbkcLogo {
     height: 50px;
 }
-
+a {
+    color: inherit;
+}
