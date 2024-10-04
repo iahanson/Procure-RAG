@@ -1,6 +1,6 @@
 import { Outlet, NavLink, Link } from "react-router-dom";
 
-import rbkc_logo from "../../assets/RBKC.png";
+// import rbkc_logo from "../../assets/RBKC.png";
 
 import styles from "./Layout.module.css";
 
