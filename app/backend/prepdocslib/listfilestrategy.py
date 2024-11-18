@@ -29,6 +29,23 @@ class File:
 
     def filename(self):
         return os.path.basename(self.content.name)
+    
+    def filename_cat(self):
+        cat = os.path.basename(self.content.name)
+        #cat = re.match('(?<=_-_).*',cat)
+        # cat1 = re.search('(?<=_-_).*',cat)
+        # cat1group = cat1.group(0)
+        # print("cat1",cat1,"===" ,cat1.group(0))
+        # cat2= re.search("(?<=_-_)[^.\\s]",cat)
+        # print("cat2",cat2,"===" ,cat2.group(0))
+        if re.search("_-_",cat):
+            cat1 = re.search('(?<=_-_).*',cat)
+            cat1group = cat1.group(0)
+        else:
+            cat1group=cat
+        cat1group=cat1group.split(".")[0]
+        cat1group=cat1group.replace("_"," ")
+        return cat1group
 
     def file_extension(self):
         return os.path.splitext(self.content.name)[1]

@@ -98,7 +98,12 @@ class SearchManager:
                     vector_search_dimensions=self.embedding_dimensions,
                     vector_search_profile_name="embedding_config",
                 ),
-                SimpleField(name="category", type="Edm.String", filterable=True, facetable=True),
+                #SimpleField(name="category", type="Edm.String", filterable=True, facetable=True),
+                SearchableField(name="category",  # SimpleField
+                            type="Edm.String", 
+                            searchable=True,      # added this feild in (not sure if it is necesary)
+                            filterable=True, 
+                            facetable=True),
                 SimpleField(
                     name="sourcepage",
                     type="Edm.String",
@@ -212,7 +217,7 @@ class SearchManager:
                     {
                         "id": f"{section.content.filename_to_id()}-page-{section_index + batch_index * MAX_BATCH_SIZE}",
                         "content": section.split_page.text,
-                        "category": section.category,
+                        "category": section.content.filename_cat(), #section.category,   # changed field value to filename - to keep as category will need a way to label categories and input into script (dynamic folder structure?)                         
                         "sourcepage": (
                             BlobManager.blob_image_name_from_file_page(
                                 filename=section.content.filename(),
