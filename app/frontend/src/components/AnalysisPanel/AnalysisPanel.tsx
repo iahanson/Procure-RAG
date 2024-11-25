@@ -3,6 +3,7 @@ import { Stack, Pivot, PivotItem } from "@fluentui/react";
 import styles from "./AnalysisPanel.module.css";
 
 import { SupportingContent } from "../SupportingContent";
+import { SupportingMetadata } from "../SupportingMetadata";
 import { ChatAppResponse } from "../../api";
 import { AnalysisPanelTabs } from "./AnalysisPanelTabs";
 import { ThoughtProcess } from "./ThoughtProcess";
@@ -26,6 +27,7 @@ const pivotItemDisabledStyle = { disabled: true, style: { color: "grey" } };
 export const AnalysisPanel = ({ answer, activeTab, activeCitation, citationHeight, className, onActiveTabChanged }: Props) => {
     const isDisabledThoughtProcessTab: boolean = !answer.context.thoughts;
     const isDisabledSupportingContentTab: boolean = !answer.context.data_points;
+    const isDisabledSupportingMetadataTab: boolean = !answer.context.docCategory;
     const isDisabledCitationTab: boolean = !activeCitation;
     const [citation, setCitation] = useState("");
 
@@ -89,6 +91,13 @@ export const AnalysisPanel = ({ answer, activeTab, activeCitation, citationHeigh
                 headerButtonProps={isDisabledSupportingContentTab ? pivotItemDisabledStyle : undefined}
             >
                 <SupportingContent supportingContent={answer.context.data_points} />
+            </PivotItem>
+            <PivotItem
+                itemKey={AnalysisPanelTabs.SupportingMetadataTab}
+                headerText="Category"
+                headerButtonProps={isDisabledSupportingMetadataTab ? pivotItemDisabledStyle : undefined}
+            >
+                <SupportingContent supportingContent={answer.context.docCategory} />
             </PivotItem>
             <PivotItem
                 itemKey={AnalysisPanelTabs.CitationTab}

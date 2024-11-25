@@ -43,6 +43,12 @@ class Document:
     score: Optional[float] = None
     reranker_score: Optional[float] = None
 
+    def serialize_for_category(self) -> dict[str,Any]:
+            return {
+                "category": self.category,
+            }
+
+
     def serialize_for_results(self) -> dict[str, Any]:
         return {
             "id": self.id,
@@ -118,9 +124,12 @@ class Approach(ABC):
         self.vision_token_provider = vision_token_provider
 
     def build_filter(self, overrides: dict[str, Any], auth_claims: dict[str, Any]) -> Optional[str]:
+        include_category = overrides.get("include_category")
         exclude_category = overrides.get("exclude_category")
         security_filter = self.auth_helper.build_security_filters(overrides, auth_claims)
         filters = []
+        if include_category:
+            filters.append("category eq '{}'".format(include_category.replace("'", "''")))
         if exclude_category:
             filters.append("category ne '{}'".format(exclude_category.replace("'", "''")))
         if security_filter:
@@ -208,6 +217,18 @@ class Approach(ABC):
             return [
                 (self.get_citation((doc.sourcepage or ""), use_image_citation)) + ": " + nonewlines(doc.content or "")
                 for doc in results
+            ]
+
+    def get_sources_category(
+        self, results: List[Document], use_semantic_captions: bool
+    ) -> list[str]:
+        if use_semantic_captions:
+            return [
+                doc.category for doc in results
+            ]
+        else:
+            return [
+                doc.category for doc in results
             ]
 
     def get_citation(self, sourcepage: str, use_image_citation: bool) -> str:

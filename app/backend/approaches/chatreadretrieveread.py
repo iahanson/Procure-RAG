@@ -138,7 +138,7 @@ class ChatReadRetrieveReadApproach(ChatApproach):
             messages=query_messages,  # type: ignore
             # Azure OpenAI takes the deployment name as the model name
             model=self.chatgpt_deployment if self.chatgpt_deployment else self.chatgpt_model,
-            temperature=0.0,  # Minimize creativity for search query generation
+            temperature=0.3,  # Minimize creativity for search query generation
             max_tokens=query_response_token_limit,  # Setting too low risks malformed JSON, setting too high may affect performance
             n=1,
             tools=tools,
@@ -168,7 +168,7 @@ class ChatReadRetrieveReadApproach(ChatApproach):
 
         sources_content = self.get_sources_content(results, use_semantic_captions, use_image_citation=False)
         content = "\n".join(sources_content)
-
+        source_context = self.get_sources_category(results, use_semantic_captions)
         # STEP 3: Generate a contextual and content specific answer using the search results and chat history
 
         # Allow client to replace the entire prompt, or to inject into the exiting prompt using >>>
@@ -188,9 +188,11 @@ class ChatReadRetrieveReadApproach(ChatApproach):
         )
 
         data_points = {"text": sources_content}
+        docCategory = {"text": source_context}
 
         extra_info = {
             "data_points": data_points,
+            "docCategory": docCategory,
             "thoughts": [
                 ThoughtStep(
                     "Prompt to generate search query",

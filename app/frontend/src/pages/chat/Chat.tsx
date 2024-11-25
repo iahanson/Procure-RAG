@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useContext } from "react";
-import { Checkbox, Panel, DefaultButton, TextField, ITextFieldProps, ICheckboxProps } from "@fluentui/react";
+import { Checkbox, Panel, DefaultButton, TextField, ITextFieldProps, ICheckboxProps, Dropdown, IDropdownOption, IDropdownProps } from "@fluentui/react";
 import { SparkleFilled } from "@fluentui/react-icons";
 import { useId } from "@fluentui/react-hooks";
 import readNDJSONStream from "ndjson-readablestream";
@@ -49,6 +49,7 @@ const Chat = () => {
     const [useSemanticRanker, setUseSemanticRanker] = useState<boolean>(true);
     const [shouldStream, setShouldStream] = useState<boolean>(true);
     const [useSemanticCaptions, setUseSemanticCaptions] = useState<boolean>(false);
+    const [includeCategory, setIncludeCategory] = useState<string>("");
     const [excludeCategory, setExcludeCategory] = useState<string>("");
     const [useSuggestFollowupQuestions, setUseSuggestFollowupQuestions] = useState<boolean>(true);
     const [vectorFieldList, setVectorFieldList] = useState<VectorFieldOptions[]>([VectorFieldOptions.Embedding]);
@@ -163,6 +164,7 @@ const Chat = () => {
                 context: {
                     overrides: {
                         prompt_template: promptTemplate.length === 0 ? undefined : promptTemplate,
+                        include_category: includeCategory.length === 0 ? undefined : includeCategory,
                         exclude_category: excludeCategory.length === 0 ? undefined : excludeCategory,
                         top: retrieveCount,
                         temperature: temperature,
@@ -270,6 +272,14 @@ const Chat = () => {
         setExcludeCategory(newValue || "");
     };
 
+    // const onIncludeCategoryChanged = (_ev?: React.FormEvent<HTMLElement | HTMLInputElement>, option?: IDropdownOption) => {
+    //     setIncludeCategory((option?.key as string) || "");
+    // };
+
+    const onIncludeCategoryChanged = (_ev?: React.FormEvent, newValue?: string) => {
+        setIncludeCategory(newValue || "");
+    };
+
     const onUseSuggestFollowupQuestionsChange = (_ev?: React.FormEvent<HTMLElement | HTMLInputElement>, checked?: boolean) => {
         setUseSuggestFollowupQuestions(!!checked);
     };
@@ -318,6 +328,8 @@ const Chat = () => {
     const rerankerScoreFieldId = useId("rerankerScoreField");
     const retrieveCountId = useId("retrieveCount");
     const retrieveCountFieldId = useId("retrieveCountField");
+    const includeCategoryId = useId("includeCategory");
+    const includeCategoryFieldId = useId("includeCategoryField");
     const excludeCategoryId = useId("excludeCategory");
     const excludeCategoryFieldId = useId("excludeCategoryField");
     const semanticRankerId = useId("semanticRanker");
@@ -338,7 +350,7 @@ const Chat = () => {
             <div className={styles.commandsContainer}>
                 <ClearChatButton className={styles.commandButton} onClick={clearChat} disabled={!lastQuestionRef.current || isLoading} />
                 {showUserUpload && <UploadFile className={styles.commandButton} disabled={!loggedIn} />}
-                {/* <SettingsButton className={styles.commandButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} /> */}
+                <SettingsButton className={styles.commandButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
             </div>
             <div className={styles.chatRoot}>
                 <div className={styles.chatContainer}>
@@ -346,60 +358,12 @@ const Chat = () => {
                         <div className={styles.chatEmptyState}>
                             {/* <SparkleFilled fontSize={"120px"} primaryFill={"rgba(115, 118, 225, 1)"} aria-hidden="true" aria-label="Chat logo" /> */}
                             <img width="auto" height="10%" src={rbkc_logo}></img>
-                            {/* <img
-                                src={prompt_ad}
-                                alt="prompt advice"
-                                // aria-label="Link to github repository"
-                                width="600px"
-                                height="300px"
-                                className={styles.prompt_ad}
-                            /> */}
+
                             <h1 className={styles.chatEmptyStateTitle}>Chat with the guidance data on Procurement Act 2023 </h1>
 
                             <h3 className={styles.chatEmptyStateSubtitle}>
                                 <b>Caution</b>: all content is generated from a large language model and must be check by a human! You are responsible for any
                                 decisions made.{" "}
-                                {/* <br></br>Read the{" "}
-                                <a href="https://officesharedservice.sharepoint.com/sites/RBKCAIHub/SitePages/Resources.aspx" target="_blank">
-                                    guidelines
-                                </a>{" "}
-                                on the K&C AI Hub. <br></br>
-                                <br></br>
-                                This is a Retrieval Augmented Generation application. Find out more{" "}
-                                <a
-                                    href="https://officesharedservice.sharepoint.com/sites/RBKCAIHub/SitePages/Retrieval-Augmented-Generation-(RAG).aspx"
-                                    target="_blank"
-                                >
-                                    {" "}
-                                    here.
-                                </a>
-                                <br></br>Not getting the response you expected? Try altering your prompt - learn more{" "} */}
-                                {/* already commented out */}
-                                {/* <a
-                                    href="https://officesharedservice.sharepoint.com/:b:/r/sites/RBKCAIHub/Shared%20Documents/AI%20Builder%20Prompting%20Guide.pdf?csf=1&web=1&e=gtqXwe"
-                                    target="_blank"
-                                >
-                                    here
-                                </a>
-                                <a
-                                    href="https://officesharedservice.sharepoint.com/:b:/r/sites/RBKCAIHub/Shared%20Documents/AI%20Builder%20Prompting%20Guide.pdf?csf=1&web=1&e=1aF1Ts"
-                                    target="_blank"
-                                >
-                                    here1
-                                </a>
-                                <a
-                                    href="https://officesharedservice.sharepoint.com/:b:/r/sites/RBKCAIHub/Shared%20Documents/AI%20Builder%20Prompting%20Guide.pdf?csf=1&web=1&e=1aF1Ts#page=3"
-                                    target="_blank"
-                                >
-                                    here2
-                                </a> */}
-                                {/* end of already commented out */}
-                                {/* <a
-                                    href="https://officesharedservice.sharepoint.com/:b:/r/sites/RBKCAIHub/Shared%20Documents/AI%20Builder%20Prompting%20Guide.pdf#page=3?csf=1&web=1&e=1aF1Ts"
-                                    target="_blank"
-                                >
-                                    here
-                                </a>{" "} */}
                             </h3>
                             <Tips />
                             <h2 className={styles.chatEmptyStateSubtitle}>Ask anything or try an example</h2>
@@ -420,6 +384,7 @@ const Chat = () => {
                                                 onCitationClicked={c => onShowCitation(c, index)}
                                                 onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab, index)}
                                                 onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab, index)}
+                                                onSupportingMetadataClicked={() => onToggleTab(AnalysisPanelTabs.SupportingMetadataTab, index)}
                                                 onFollowupQuestionClicked={q => makeApiRequest(q)}
                                                 showFollowupQuestions={useSuggestFollowupQuestions && answers.length - 1 === index}
                                                 showSpeechOutputAzure={showSpeechOutputAzure}
@@ -442,6 +407,7 @@ const Chat = () => {
                                                 onCitationClicked={c => onShowCitation(c, index)}
                                                 onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab, index)}
                                                 onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab, index)}
+                                                onSupportingMetadataClicked={() => onToggleTab(AnalysisPanelTabs.SupportingMetadataTab, index)}
                                                 onFollowupQuestionClicked={q => makeApiRequest(q)}
                                                 showFollowupQuestions={useSuggestFollowupQuestions && answers.length - 1 === index}
                                                 showSpeechOutputAzure={showSpeechOutputAzure}
@@ -521,7 +487,7 @@ const Chat = () => {
                         )}
                     />
 
-                    <TextField
+                    {/* <TextField
                         id={temperatureFieldId}
                         className={styles.chatSettingsSeparator}
                         label="Temperature"
@@ -535,9 +501,9 @@ const Chat = () => {
                         onRenderLabel={(props: ITextFieldProps | undefined) => (
                             <HelpCallout labelId={temperatureId} fieldId={temperatureFieldId} helpText={toolTipText.temperature} label={props?.label} />
                         )}
-                    />
+                    /> */}
 
-                    <TextField
+                    {/* <TextField
                         id={searchScoreFieldId}
                         className={styles.chatSettingsSeparator}
                         label="Minimum search score"
@@ -550,9 +516,9 @@ const Chat = () => {
                         onRenderLabel={(props: ITextFieldProps | undefined) => (
                             <HelpCallout labelId={searchScoreId} fieldId={searchScoreFieldId} helpText={toolTipText.searchScore} label={props?.label} />
                         )}
-                    />
+                    /> */}
 
-                    {showSemanticRankerOption && (
+                    {/* {showSemanticRankerOption && (
                         <TextField
                             id={rerankerScoreFieldId}
                             className={styles.chatSettingsSeparator}
@@ -573,9 +539,9 @@ const Chat = () => {
                                 />
                             )}
                         />
-                    )}
+                    )} */}
 
-                    <TextField
+                    {/* <TextField
                         id={retrieveCountFieldId}
                         className={styles.chatSettingsSeparator}
                         label="Retrieve this many search results:"
@@ -587,6 +553,47 @@ const Chat = () => {
                         aria-labelledby={retrieveCountId}
                         onRenderLabel={(props: ITextFieldProps | undefined) => (
                             <HelpCallout labelId={retrieveCountId} fieldId={retrieveCountFieldId} helpText={toolTipText.retrieveNumber} label={props?.label} />
+                        )}
+                    /> */}
+
+                    {/* <Dropdown
+                        id={includeCategoryFieldId}
+                        className={styles.chatSettingsSeparator}
+                        label="labels.includeCategory"
+                        selectedKey={includeCategory}
+                        onChange={onIncludeCategoryChanged}
+                        aria-labelledby={includeCategoryId}
+                        options={[
+                            { key: "", text: "All" }
+                            // You can add a category key here for ingested data like below:
+                            // { key: 'categoryName', text: 'Meaningful Category Name' }
+                            // Alternatively, display the key to guide the user on what to type
+                            // in the "Exclude category" field (e.g., 'Meaningful Category Name(categoryName)').
+                        ]}
+                        onRenderLabel={(props: IDropdownProps | undefined) => (
+                            <HelpCallout
+                                labelId={includeCategoryId}
+                                fieldId={includeCategoryFieldId}
+                                helpText={"helpTexts.includeCategory"}
+                                label={props?.label}
+                            />
+                        )}
+                    /> */}
+
+                    <TextField
+                        id={includeCategoryFieldId}
+                        className={styles.chatSettingsSeparator}
+                        label="Include Category"
+                        defaultValue={includeCategory}
+                        onChange={onIncludeCategoryChanged}
+                        aria-labelledby={includeCategoryId}
+                        onRenderLabel={(props: ITextFieldProps | undefined) => (
+                            <HelpCallout
+                                labelId={includeCategoryId}
+                                fieldId={includeCategoryFieldId}
+                                helpText={toolTipText.includeCategory}
+                                label={props?.label}
+                            />
                         )}
                     />
 
@@ -646,7 +653,7 @@ const Chat = () => {
                         </>
                     )}
 
-                    <Checkbox
+                    {/* <Checkbox
                         id={suggestFollowupQuestionsFieldId}
                         className={styles.chatSettingsSeparator}
                         checked={useSuggestFollowupQuestions}
@@ -661,9 +668,9 @@ const Chat = () => {
                                 label={props?.label}
                             />
                         )}
-                    />
+                    /> */}
 
-                    {showGPT4VOptions && (
+                    {/* {showGPT4VOptions && (
                         <GPT4VSettings
                             gpt4vInputs={gpt4vInput}
                             isUseGPT4V={useGPT4V}
@@ -672,16 +679,16 @@ const Chat = () => {
                             }}
                             updateGPT4VInputs={inputs => setGPT4VInput(inputs)}
                         />
-                    )}
+                    )} */}
 
-                    {showVectorOption && (
+                    {/* {showVectorOption && (
                         <VectorSettings
                             defaultRetrievalMode={retrievalMode}
                             showImageOptions={useGPT4V && showGPT4VOptions}
                             updateVectorFields={(options: VectorFieldOptions[]) => setVectorFieldList(options)}
                             updateRetrievalMode={(retrievalMode: RetrievalMode) => setRetrievalMode(retrievalMode)}
                         />
-                    )}
+                    )} */}
 
                     {useLogin && (
                         <>
@@ -722,7 +729,7 @@ const Chat = () => {
                         </>
                     )}
 
-                    <Checkbox
+                    {/* <Checkbox
                         id={shouldStreamFieldId}
                         className={styles.chatSettingsSeparator}
                         checked={shouldStream}
@@ -732,7 +739,7 @@ const Chat = () => {
                         onRenderLabel={(props: ICheckboxProps | undefined) => (
                             <HelpCallout labelId={shouldStreamId} fieldId={shouldStreamFieldId} helpText={toolTipText.streamChat} label={props?.label} />
                         )}
-                    />
+                    /> */}
 
                     {useLogin && <TokenClaimsDisplay />}
                 </Panel>

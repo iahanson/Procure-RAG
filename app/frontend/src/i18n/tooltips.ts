@@ -11,7 +11,9 @@ export const toolTipText = {
         "Sets a minimum score for search results coming back from the semantic reranker. The score always ranges between 0-4. The higher the score, the more semantically relevant the result is to the question.",
     retrieveNumber:
         "Sets the number of search results to retrieve from Azure AI search. More results may increase the likelihood of finding the correct answer, but may lead to the model getting 'lost in the middle'.",
-    excludeCategory: "Specifies a category to exclude from the search results. There are no categories used in the default data set.",
+    includeCategory:
+        "Specifies a category to include from the search results (default is to include all). The category is a shortened version of the document title.",
+    excludeCategory: "Specifies a category to exclude from the search results. The category is a shortened version of the document title.",
     useSemanticReranker: "Enables the Azure AI Search semantic ranker, a model that re-ranks search results based on semantic similarity to the user's query.",
     useSemanticCaptions:
         "Sends semantic captions to the LLM instead of the full search result. A semantic caption is extracted from a search result during the process of semantic ranking.",

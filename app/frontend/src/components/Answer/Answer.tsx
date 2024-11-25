@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { Stack, IconButton } from "@fluentui/react";
 import DOMPurify from "dompurify";
+import { Thoughts } from "../../api";
+import SyntaxHighlighter from "react-syntax-highlighter";
 
 import styles from "./Answer.module.css";
 import { ChatAppResponse, getCitationFilePath } from "../../api";
@@ -16,6 +18,7 @@ interface Props {
     onCitationClicked: (filePath: string) => void;
     onThoughtProcessClicked: () => void;
     onSupportingContentClicked: () => void;
+    onSupportingMetadataClicked: () => void;
     onFollowupQuestionClicked?: (question: string) => void;
     showFollowupQuestions?: boolean;
     showSpeechOutputBrowser?: boolean;
@@ -30,6 +33,7 @@ export const Answer = ({
     onCitationClicked,
     onThoughtProcessClicked,
     onSupportingContentClicked,
+    onSupportingMetadataClicked,
     onFollowupQuestionClicked,
     showFollowupQuestions,
     showSpeechOutputAzure,
@@ -37,8 +41,9 @@ export const Answer = ({
     speechUrl
 }: Props) => {
     const followupQuestions = answer.context?.followup_questions;
-    const messageContent = answer.message.content;
-    const parsedAnswer = useMemo(() => parseAnswerToHtml(messageContent, isStreaming, onCitationClicked), [answer]);
+    const answerCategory = answer.context?.docCategory;
+
+    const parsedAnswer = useMemo(() => parseAnswerToHtml(answer, isStreaming, onCitationClicked), [answer]);
 
     const sanitizedAnswerHtml = DOMPurify.sanitize(parsedAnswer.answerHtml);
 
@@ -63,6 +68,14 @@ export const Answer = ({
                             ariaLabel="Show supporting content"
                             onClick={() => onSupportingContentClicked()}
                             disabled={!answer.context.data_points}
+                        />
+                        <IconButton
+                            style={{ color: "black" }}
+                            iconProps={{ iconName: "List" }}
+                            title="Show supporting categories"
+                            ariaLabel="Show supporting categories"
+                            onClick={() => onSupportingMetadataClicked()}
+                            disabled={!answer.context.docCategory}
                         />
                         {showSpeechOutputAzure && <SpeechOutputAzure url={speechUrl} />}
                         {showSpeechOutputBrowser && <SpeechOutputBrowser answer={sanitizedAnswerHtml} />}

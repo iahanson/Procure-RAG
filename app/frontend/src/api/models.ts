@@ -20,7 +20,9 @@ export type ChatAppRequestOverrides = {
     retrieval_mode?: RetrievalMode;
     semantic_ranker?: boolean;
     semantic_captions?: boolean;
+    include_category?: string;
     exclude_category?: string;
+    seed?: number;
     top?: number;
     temperature?: number;
     minimum_search_score?: number;
@@ -51,6 +53,7 @@ export type ResponseContext = {
     data_points: string[];
     followup_questions: string[] | null;
     thoughts: Thoughts[];
+    docCategory: string[];
 };
 
 export type ChatAppResponseOrError = {
@@ -83,11 +86,42 @@ export type Config = {
     showSemanticRankerOption: boolean;
     showVectorOption: boolean;
     showUserUpload: boolean;
+    showLanguagePicker: boolean;
     showSpeechInput: boolean;
     showSpeechOutputBrowser: boolean;
     showSpeechOutputAzure: boolean;
+    showChatHistoryBrowser: boolean;
+    showChatHistoryCosmos: boolean;
 };
 
 export type SimpleAPIResponse = {
     message?: string;
+};
+// export type getCategory = {
+//     category?: string;
+// };
+export interface SpeechConfig {
+    speechUrls: (string | null)[];
+    setSpeechUrls: (urls: (string | null)[]) => void;
+    audio: HTMLAudioElement;
+    isPlaying: boolean;
+    setIsPlaying: (isPlaying: boolean) => void;
+}
+
+export type HistoryListApiResponse = {
+    items: {
+        id: string;
+        entra_oid: string;
+        title: string;
+        timestamp: number;
+    }[];
+    continuation_token?: string;
+};
+
+export type HistroyApiResponse = {
+    id: string;
+    entra_oid: string;
+    title: string;
+    answers: any;
+    timestamp: number;
 };
