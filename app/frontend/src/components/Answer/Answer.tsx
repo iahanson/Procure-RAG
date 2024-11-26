@@ -42,6 +42,7 @@ export const Answer = ({
 }: Props) => {
     const followupQuestions = answer.context?.followup_questions;
     const answerCategory = answer.context?.docCategory;
+    const answerDomain = answer.context?.docDomain;
 
     const parsedAnswer = useMemo(() => parseAnswerToHtml(answer, isStreaming, onCitationClicked), [answer]);
 

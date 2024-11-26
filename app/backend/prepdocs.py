@@ -245,6 +245,9 @@ if __name__ == "__main__":
         "--category", help="Value for the category field in the search index for all sections indexed in this run"
     )
     parser.add_argument(
+        "--domain", help="Value for the domain field in the search index for all sections indexed in this run"
+    )
+    parser.add_argument(
         "--skipblobs", action="store_true", help="Skip uploading individual pages to Azure Blob Storage"
     )
     parser.add_argument("--storageaccount", help="Azure Blob Storage account name")
@@ -449,6 +452,7 @@ if __name__ == "__main__":
             search_analyzer_name=args.searchanalyzername,
             use_acls=args.useacls,
             category=args.category,
+            domain = args.domain,
         )
     else:
         file_processors = setup_file_processors(
@@ -474,6 +478,7 @@ if __name__ == "__main__":
             search_analyzer_name=args.searchanalyzername,
             use_acls=args.useacls,
             category=args.category,
+            domain=args.domain,
         )
 
     loop.run_until_complete(main(ingestion_strategy, setup_index=not args.remove and not args.removeall))

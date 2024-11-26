@@ -7,6 +7,7 @@ type HtmlParsedAnswer = {
     citations: string[];
     categories: string[];
     contextThoughts: string[];
+    contextDomain: string[];
 };
 
 //export function parseAnswerToHtml(answer: string, isStreaming: boolean, onCitationClicked: (citationFilePath: string) => void): HtmlParsedAnswer {
@@ -35,6 +36,7 @@ function isCitationValid(contextDataPoints: any, citationCandidate: string): boo
 export function parseAnswerToHtml(answer: ChatAppResponse, isStreaming: boolean, onCitationClicked: (citationFilePath: string) => void): HtmlParsedAnswer {
     const contextDataPoints = answer.context.data_points;
     const contextThoughts = answer.context.docCategory;
+    const contextDomain = answer.context.docDomain;
     const citations: string[] = [];
     const categories: string[] = [];
 
@@ -89,6 +91,7 @@ export function parseAnswerToHtml(answer: ChatAppResponse, isStreaming: boolean,
         answerHtml: fragments.join(""),
         citations,
         categories,
-        contextThoughts
+        contextThoughts,
+        contextDomain
     };
 }

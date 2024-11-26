@@ -51,6 +51,7 @@ const Chat = () => {
     const [useSemanticCaptions, setUseSemanticCaptions] = useState<boolean>(false);
     const [includeCategory, setIncludeCategory] = useState<string>("");
     const [excludeCategory, setExcludeCategory] = useState<string>("");
+    const [includeDomain, setIncludeDomain] = useState<string>("");
     const [useSuggestFollowupQuestions, setUseSuggestFollowupQuestions] = useState<boolean>(true);
     const [vectorFieldList, setVectorFieldList] = useState<VectorFieldOptions[]>([VectorFieldOptions.Embedding]);
     const [useOidSecurityFilter, setUseOidSecurityFilter] = useState<boolean>(false);
@@ -166,6 +167,7 @@ const Chat = () => {
                         prompt_template: promptTemplate.length === 0 ? undefined : promptTemplate,
                         include_category: includeCategory.length === 0 ? undefined : includeCategory,
                         exclude_category: excludeCategory.length === 0 ? undefined : excludeCategory,
+                        include_domain: includeDomain.length === 0 ? undefined : includeDomain,
                         top: retrieveCount,
                         temperature: temperature,
                         minimum_reranker_score: minimumRerankerScore,
@@ -276,6 +278,10 @@ const Chat = () => {
     //     setIncludeCategory((option?.key as string) || "");
     // };
 
+    const onIncludeDomainChanged = (_ev?: React.FormEvent<HTMLElement | HTMLInputElement>, option?: IDropdownOption) => {
+        setIncludeDomain((option?.key as string) || "");
+    };
+
     const onIncludeCategoryChanged = (_ev?: React.FormEvent, newValue?: string) => {
         setIncludeCategory(newValue || "");
     };
@@ -332,6 +338,8 @@ const Chat = () => {
     const includeCategoryFieldId = useId("includeCategoryField");
     const excludeCategoryId = useId("excludeCategory");
     const excludeCategoryFieldId = useId("excludeCategoryField");
+    const includeDomainId = useId("includeDomain");
+    const includeDomainFieldId = useId("includeDomainField");
     const semanticRankerId = useId("semanticRanker");
     const semanticRankerFieldId = useId("semanticRankerField");
     const semanticCaptionsId = useId("semanticCaptions");
@@ -556,29 +564,25 @@ const Chat = () => {
                         )}
                     /> */}
 
-                    {/* <Dropdown
-                        id={includeCategoryFieldId}
+                    <Dropdown
+                        id={includeDomainFieldId}
                         className={styles.chatSettingsSeparator}
-                        label="labels.includeCategory"
-                        selectedKey={includeCategory}
-                        onChange={onIncludeCategoryChanged}
-                        aria-labelledby={includeCategoryId}
+                        label="Domain Filter (inclusive)"
+                        selectedKey={includeDomain}
+                        onChange={onIncludeDomainChanged}
+                        aria-labelledby={includeDomainId}
                         options={[
-                            { key: "", text: "All" }
+                            { key: "", text: "All documents" },
                             // You can add a category key here for ingested data like below:
-                            // { key: 'categoryName', text: 'Meaningful Category Name' }
+                            { key: "RBKC", text: "RBKC" },
+                            { key: "GOV.UK", text: "GOV.UK" }
                             // Alternatively, display the key to guide the user on what to type
                             // in the "Exclude category" field (e.g., 'Meaningful Category Name(categoryName)').
                         ]}
                         onRenderLabel={(props: IDropdownProps | undefined) => (
-                            <HelpCallout
-                                labelId={includeCategoryId}
-                                fieldId={includeCategoryFieldId}
-                                helpText={"helpTexts.includeCategory"}
-                                label={props?.label}
-                            />
+                            <HelpCallout labelId={includeDomainId} fieldId={includeDomainFieldId} helpText={"helpTexts.includeDomain"} label={props?.label} />
                         )}
-                    /> */}
+                    />
 
                     <TextField
                         id={includeCategoryFieldId}

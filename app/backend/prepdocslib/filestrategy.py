@@ -15,6 +15,7 @@ async def parse_file(
     file: File,
     file_processors: dict[str, FileProcessor],
     category: Optional[str] = None,
+    domain: Optional[str] = None,
     image_embeddings: Optional[ImageEmbeddings] = None,
 ) -> List[Section]:
     key = file.file_extension() #.lower()
@@ -28,7 +29,7 @@ async def parse_file(
     if image_embeddings:
         logger.warning("Each page will be split into smaller chunks of text, but images will be of the entire page.")
     sections = [
-        Section(split_page, content=file, category=category) for split_page in processor.splitter.split_pages(pages)
+        Section(split_page, content=file, category=category, domain=domain) for split_page in processor.splitter.split_pages(pages)
     ]
     return sections
 
@@ -50,6 +51,7 @@ class FileStrategy(Strategy):
         search_analyzer_name: Optional[str] = None,
         use_acls: bool = False,
         category: Optional[str] = None,
+        domain: Optional[str] = None,
     ):
         self.list_file_strategy = list_file_strategy
         self.blob_manager = blob_manager
@@ -61,6 +63,7 @@ class FileStrategy(Strategy):
         self.search_info = search_info
         self.use_acls = use_acls
         self.category = category
+        self.domain = domain
 
     async def setup(self):
         search_manager = SearchManager(
@@ -81,7 +84,7 @@ class FileStrategy(Strategy):
             files = self.list_file_strategy.list()
             async for file in files:
                 try:
-                    sections = await parse_file(file, self.file_processors, self.category, self.image_embeddings)
+                    sections = await parse_file(file, self.file_processors, self.category, self.domain, self.image_embeddings)
                     if sections:
                         blob_sas_uris = await self.blob_manager.upload_blob(file)
                         blob_image_embeddings: Optional[List[List[float]]] = None

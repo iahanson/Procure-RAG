@@ -48,6 +48,7 @@ class IntegratedVectorizerStrategy(Strategy):
         search_analyzer_name: Optional[str] = None,
         use_acls: bool = False,
         category: Optional[str] = None,
+        domain: Optional[str] = None,
     ):
         if not embeddings or not isinstance(embeddings, AzureOpenAIEmbeddingService):
             raise Exception("Expecting AzureOpenAI embedding service")
@@ -61,6 +62,7 @@ class IntegratedVectorizerStrategy(Strategy):
         self.search_analyzer_name = search_analyzer_name
         self.use_acls = use_acls
         self.category = category
+        self.domain = domain
         self.search_info = search_info
 
     async def create_embedding_skill(self, index_name: str):

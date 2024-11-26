@@ -35,6 +35,7 @@ class Document:
     embedding: Optional[List[float]]
     image_embedding: Optional[List[float]]
     category: Optional[str]
+    domain: Optional[str]
     sourcepage: Optional[str]
     sourcefile: Optional[str]
     oids: Optional[List[str]]
@@ -56,6 +57,7 @@ class Document:
             "embedding": Document.trim_embedding(self.embedding),
             "imageEmbedding": Document.trim_embedding(self.image_embedding),
             "category": self.category,
+            "domain": self.domain,
             "sourcepage": self.sourcepage,
             "sourcefile": self.sourcefile,
             "oids": self.oids,
@@ -126,12 +128,15 @@ class Approach(ABC):
     def build_filter(self, overrides: dict[str, Any], auth_claims: dict[str, Any]) -> Optional[str]:
         include_category = overrides.get("include_category")
         exclude_category = overrides.get("exclude_category")
+        include_domain = overrides.get("include_domain")
         security_filter = self.auth_helper.build_security_filters(overrides, auth_claims)
         filters = []
         if include_category:
             filters.append("category eq '{}'".format(include_category.replace("'", "''")))
         if exclude_category:
             filters.append("category ne '{}'".format(exclude_category.replace("'", "''")))
+        if include_domain:
+            filters.append("domain ne '{}'".format(include_domain.replace("'", "''")))
         if security_filter:
             filters.append(security_filter)
         return None if len(filters) == 0 else " and ".join(filters)
@@ -182,6 +187,7 @@ class Approach(ABC):
                         embedding=document.get("embedding"),
                         image_embedding=document.get("imageEmbedding"),
                         category=document.get("category"),
+                        domain=document.get("domain"),
                         sourcepage=document.get("sourcepage"),
                         sourcefile=document.get("sourcefile"),
                         oids=document.get("oids"),
@@ -230,6 +236,19 @@ class Approach(ABC):
             return [
                 doc.category for doc in results
             ]
+        
+    def get_sources_domain(
+        self, results: List[Document], use_semantic_captions: bool
+    ) -> list[str]:
+        if use_semantic_captions:
+            return [
+                doc.domain for doc in results
+            ]
+        else:
+            return [
+                doc.domain for doc in results
+            ]
+
 
     def get_citation(self, sourcepage: str, use_image_citation: bool) -> str:
         if use_image_citation:

@@ -14,6 +14,7 @@ export const toolTipText = {
     includeCategory:
         "Specifies a category to include from the search results (default is to include all). The category is a shortened version of the document title.",
     excludeCategory: "Specifies a category to exclude from the search results. The category is a shortened version of the document title.",
+    includeDomain: "Specifies a domain to isolate the search results to. The domain is either 'RBKC for local docs or GOV.UK for guidance from central government.",
     useSemanticReranker: "Enables the Azure AI Search semantic ranker, a model that re-ranks search results based on semantic similarity to the user's query.",
     useSemanticCaptions:
         "Sends semantic captions to the LLM instead of the full search result. A semantic caption is extracted from a search result during the process of semantic ranking.",

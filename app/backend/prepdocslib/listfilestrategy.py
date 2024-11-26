@@ -42,6 +42,18 @@ class File:
         cat1group=cat1group.replace("_"," ")
         return cat1group
 
+    def file_domain(self):
+        cat = os.path.basename(self.content.name)
+        
+        if re.search("Guidance",cat):
+            domain = "GOV.UK"
+        elif re.search("ProcurementAct2023",cat):
+            domain = "GOV.UK"
+        else:
+            domain = "RBKC"
+        
+        return domain    
+
     def file_extension(self):
         return os.path.splitext(self.content.name)[1]
 

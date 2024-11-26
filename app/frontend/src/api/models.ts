@@ -22,6 +22,7 @@ export type ChatAppRequestOverrides = {
     semantic_captions?: boolean;
     include_category?: string;
     exclude_category?: string;
+    include_domain?: string;
     seed?: number;
     top?: number;
     temperature?: number;
@@ -54,6 +55,7 @@ export type ResponseContext = {
     followup_questions: string[] | null;
     thoughts: Thoughts[];
     docCategory: string[];
+    docDomain: string[];
 };
 
 export type ChatAppResponseOrError = {

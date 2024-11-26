@@ -169,6 +169,7 @@ class ChatReadRetrieveReadApproach(ChatApproach):
         sources_content = self.get_sources_content(results, use_semantic_captions, use_image_citation=False)
         content = "\n".join(sources_content)
         source_context = self.get_sources_category(results, use_semantic_captions)
+        source_domain = self.get_sources_domain(results, use_semantic_captions)
         # STEP 3: Generate a contextual and content specific answer using the search results and chat history
 
         # Allow client to replace the entire prompt, or to inject into the exiting prompt using >>>
@@ -189,10 +190,12 @@ class ChatReadRetrieveReadApproach(ChatApproach):
 
         data_points = {"text": sources_content}
         docCategory = {"text": source_context}
+        docDomain = {"text": source_domain}
 
         extra_info = {
             "data_points": data_points,
             "docCategory": docCategory,
+            "docDomain": docDomain,
             "thoughts": [
                 ThoughtStep(
                     "Prompt to generate search query",

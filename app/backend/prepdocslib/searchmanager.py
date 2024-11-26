@@ -104,6 +104,13 @@ class SearchManager:
                             searchable=True,      # added this feild in (not sure if it is necesary)
                             filterable=True, 
                             facetable=True),
+                
+                SearchableField(name="domain",  # SimpleField
+                        type="Edm.String", 
+                        searchable=True,      # added this feild in (not sure if it is necesary)
+                        filterable=True, 
+                        facetable=True),
+
                 SimpleField(
                     name="sourcepage",
                     type="Edm.String",
@@ -218,6 +225,7 @@ class SearchManager:
                         "id": f"{section.content.filename_to_id()}-page-{section_index + batch_index * MAX_BATCH_SIZE}",
                         "content": section.split_page.text,
                         "category": section.content.filename_cat(), #section.category,   # changed field value to filename - to keep as category will need a way to label categories and input into script (dynamic folder structure?)                         
+                        "domain": section.content.file_domain(),
                         "sourcepage": (
                             BlobManager.blob_image_name_from_file_page(
                                 filename=section.content.filename(),
