@@ -580,7 +580,7 @@ const Chat = () => {
                             // in the "Exclude category" field (e.g., 'Meaningful Category Name(categoryName)').
                         ]}
                         onRenderLabel={(props: IDropdownProps | undefined) => (
-                            <HelpCallout labelId={includeDomainId} fieldId={includeDomainFieldId} helpText={"helpTexts.includeDomain"} label={props?.label} />
+                            <HelpCallout labelId={includeDomainId} fieldId={includeDomainFieldId} helpText={toolTipText.includeDomain} label={props?.label} />
                         )}
                     />
 
