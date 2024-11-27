@@ -136,7 +136,7 @@ class Approach(ABC):
         if exclude_category:
             filters.append("category ne '{}'".format(exclude_category.replace("'", "''")))
         if include_domain:
-            filters.append("domain ne '{}'".format(include_domain.replace("'", "''")))
+            filters.append("domain eq '{}'".format(include_domain.replace("'", "''")))
         if security_filter:
             filters.append(security_filter)
         return None if len(filters) == 0 else " and ".join(filters)

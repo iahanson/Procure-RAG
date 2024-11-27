@@ -618,7 +618,7 @@ const Chat = () => {
                         )}
                     />
 
-                    {showSemanticRankerOption && (
+                    {/* {showSemanticRankerOption && (
                         <>
                             <Checkbox
                                 id={semanticRankerFieldId}
@@ -655,7 +655,7 @@ const Chat = () => {
                                 )}
                             />
                         </>
-                    )}
+                    )} */}
 
                     {/* <Checkbox
                         id={suggestFollowupQuestionsFieldId}
