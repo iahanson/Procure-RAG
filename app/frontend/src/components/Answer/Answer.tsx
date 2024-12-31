@@ -53,6 +53,7 @@ export const Answer = ({
             <Stack.Item>
                 <Stack horizontal horizontalAlign="space-between">
                     <AnswerIcon />
+                    <h4 className={styles.headerRightText}>Caution! AI generated content</h4>
                     <div>
                         <IconButton
                             style={{ color: "black" }}
