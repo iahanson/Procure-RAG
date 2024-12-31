@@ -370,8 +370,8 @@ const Chat = () => {
                             <h1 className={styles.chatEmptyStateTitle}>Chat with the guidance data on Procurement Act 2023 </h1>
 
                             <h3 className={styles.chatEmptyStateSubtitle}>
-                                <b>Caution</b>: all content is generated from a large language model and must be check by a human! You are responsible for any
-                                decisions made.{" "}
+                                <b>Caution</b>: all content is generated from a large language model and must be checked by a human! <b>You</b> are responsible
+                                for any decisions made.{" "}
                             </h3>
                             <Tips />
                             <h2 className={styles.chatEmptyStateSubtitle}>Ask anything or try an example</h2>
