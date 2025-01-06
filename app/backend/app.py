@@ -528,7 +528,7 @@ async def setup_clients():
         current_app.config[CONFIG_CREDENTIAL] = azure_credential
 
     if OPENAI_HOST.startswith("azure"):
-        api_version = os.getenv("AZURE_OPENAI_API_VERSION") or "2024-03-01-preview"
+        api_version = os.getenv("AZURE_OPENAI_API_VERSION") or "2024-06-01"   #"2024-03-01-preview"
         if OPENAI_HOST == "azure_custom":
             if not AZURE_OPENAI_CUSTOM_URL:
                 raise ValueError("AZURE_OPENAI_CUSTOM_URL must be set when OPENAI_HOST is azure_custom")
