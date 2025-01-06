@@ -199,7 +199,7 @@ openai==1.35.7
     # via
     #   -r requirements.in
     #   openai-messages-token-helper
-openai-messages-token-helper==0.1.5
+openai-messages-token-helper==0.1.10
     # via -r requirements.in
 opentelemetry-api==1.25.0
     # via
