@@ -549,7 +549,7 @@ const Chat = () => {
                         />
                     )} */}
 
-                    {/* <TextField
+                    <TextField
                         id={retrieveCountFieldId}
                         className={styles.chatSettingsSeparator}
                         label="Retrieve this many search results:"
@@ -562,7 +562,7 @@ const Chat = () => {
                         onRenderLabel={(props: ITextFieldProps | undefined) => (
                             <HelpCallout labelId={retrieveCountId} fieldId={retrieveCountFieldId} helpText={toolTipText.retrieveNumber} label={props?.label} />
                         )}
-                    /> */}
+                    />
 
                     <Dropdown
                         id={includeDomainFieldId}
