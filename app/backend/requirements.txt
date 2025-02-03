@@ -334,7 +334,7 @@ pydantic==2.8.0
     # via openai
 pydantic-core==2.20.0
     # via pydantic
-pyjwt[crypto]==2.8.0
+pyjwt[crypto]==2.9.0
     # via
     #   msal
     #   pyjwt
