@@ -21,11 +21,8 @@ RAG application excels at sifting through a large corpus of unstructured data an
 
 ### Data Ingestion
 
-There are multiple steps for proper data ingestion:
+There are multiple steps for proper data ingestion:  Look at predocs folder for stategies.  Current data is knowledge store is mostly PDF based and data ingestion is primarily used through local pdf parser to save money with Doc Intelligence.
 
-#### Web Scraping
-
-Two python files used for webscaping will be added.  The scripts find all href links in an html file and iterate through each page,saving the entire html file to the data folder so that the html parser can extract the relevant text.
 
 #### HTML Parsing
 
@@ -49,7 +46,9 @@ Application largely follows standard assistant behavior.
 
 ## Limitations 🙅‍♂️
 
-This application currently has some limitations that many impact its ability to help with all questions.
+This application currently has some limitations that many impact its ability to help with all questions.  
+
+Updated documents - need a method for automating checks for updaing documents in knowledge base.
 
 ## Deploy application
 
@@ -61,6 +60,7 @@ This application currently has some limitations that many impact its ability to 
 
 ## Future Additions 🔮
 
-* Attache to CosmosDB to allow for user feedback (thumbs  up/down) which will give greater evaluation power to model
+* Attach to CosmosDB to allow for user feedback (thumbs  up/down) which will give greater evaluation power to model
 * Bring in functionality to upload additional documents
 * Bring in GPT vision functionality - additional costs
+* Automate checks and ingenstion of updated docs
