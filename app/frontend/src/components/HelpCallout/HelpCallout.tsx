@@ -1,3 +1,4 @@
+import * as React from "react";
 import { ITextFieldProps, DefaultButton, IconButton, IButtonStyles, Callout, IStackTokens, Stack, IStackStyles, initializeIcons } from "@fluentui/react";
 import { useBoolean, useId } from "@fluentui/react-hooks";
 
@@ -17,7 +18,7 @@ interface IHelpCalloutProps {
     helpText: string;
 }
 
-export const HelpCallout = (props: IHelpCalloutProps): JSX.Element => {
+export const HelpCallout = (props: IHelpCalloutProps): React.JSX.Element => {
     const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false);
     const descriptionId: string = useId("description");
     const iconButtonId: string = useId("iconButton");

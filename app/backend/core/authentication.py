@@ -7,8 +7,8 @@ from typing import Any, Optional
 import aiohttp
 from azure.search.documents.aio import SearchClient
 from azure.search.documents.indexes.models import SearchIndex
-from jose import jwt
-from jose.exceptions import ExpiredSignatureError, JWTClaimsError
+from jwt import PyJWKClient, decode as jwt_decode, get_unverified_header  # noqa: F401
+from jwt.exceptions import ExpiredSignatureError, InvalidAudienceError, InvalidIssuerError, PyJWTError
 from msal import ConfidentialClientApplication
 from msal.token_cache import TokenCache
 from tenacity import (
@@ -310,13 +310,13 @@ class AuthenticationHelper:
         issuer = None
         audience = None
         try:
-            unverified_header = jwt.get_unverified_header(token)
-            unverified_claims = jwt.get_unverified_claims(token)
+            unverified_header = get_unverified_header(token)
+            unverified_claims = jwt_decode(token, options={"verify_signature": False})
             issuer = unverified_claims.get("iss")
             audience = unverified_claims.get("aud")
             for key in jwks["keys"]:
                 if key["kid"] == unverified_header["kid"]:
-                    rsa_key = {"kty": key["kty"], "kid": key["kid"], "use": key["use"], "n": key["n"], "e": key["e"]}
+                    rsa_key = key
                     break
         except Exception as exc:
             raise AuthError(
@@ -340,14 +340,21 @@ class AuthenticationHelper:
             )
 
         try:
-            jwt.decode(token, rsa_key, algorithms=["RS256"], audience=audience, issuer=issuer)
+            from jwt import PyJWK
+
+            signing_key = PyJWK(rsa_key).key
+            jwt_decode(token, signing_key, algorithms=["RS256"], audience=audience, issuer=issuer)
         except ExpiredSignatureError as jwt_expired_exc:
             raise AuthError({"code": "token_expired", "description": "token is expired"}, 401) from jwt_expired_exc
-        except JWTClaimsError as jwt_claims_exc:
+        except (InvalidAudienceError, InvalidIssuerError) as jwt_claims_exc:
             raise AuthError(
                 {"code": "invalid_claims", "description": "incorrect claims," "please check the audience and issuer"},
                 401,
             ) from jwt_claims_exc
+        except PyJWTError as exc:
+            raise AuthError(
+                {"code": "invalid_header", "description": "Unable to parse authorization token."}, 401
+            ) from exc
         except Exception as exc:
             raise AuthError(
                 {"code": "invalid_header", "description": "Unable to parse authorization token."}, 401

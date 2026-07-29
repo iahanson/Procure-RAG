@@ -4,11 +4,11 @@ import styles from "./Example.module.css";
 
 const DEFAULT_EXAMPLES: string[] = [
     "What technical specifications have changed from the 2015 Procurement Act?",
-    "What types of contracts are exempt from the 2023 Act?",
+    "Provide two detailed lists. One list of the types of contracts that are exempt from the 2023 act and another list of the below threshold contracts.  Additionally, provide a summary of any changes in these categories from the previous legislation.",
     // "What steps are needed to ensure a supplier is not put at an unfair advantage and/or to avoid competition being distorted?",
     "At the beginning the procurement process, what are the top ten things I should be considering?",
     //"What does the RBKC Constitution say about procurement rules and regulations?",
-    "What do I need to know about the changes to the Procurement Act?"
+    "Provide a detailed summary of the competitive tendering procsses and follow this summary with an HTML table outlining the changes in competitive tendering from the 2015 act to the 2023 act."
 ];
 
 const GPT4V_EXAMPLES: string[] = [

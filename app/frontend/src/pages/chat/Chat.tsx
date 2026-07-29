@@ -367,7 +367,9 @@ const Chat = () => {
                             {/* <SparkleFilled fontSize={"120px"} primaryFill={"rgba(115, 118, 225, 1)"} aria-hidden="true" aria-label="Chat logo" /> */}
                             <img width="auto" height="10%" src={rbkc_logo}></img>
 
-                            <h1 className={styles.chatEmptyStateTitle}>Chat with the guidance data on Procurement Act 2023 </h1>
+                            <h1 className={styles.chatEmptyStateTitle}>Procurement Knowledge Tool </h1>
+
+                            <h2 className={styles.chatEmptyStateSubtitle}>Chat with the guidance data on Procurement Act 2023 </h2>
 
                             <h3 className={styles.chatEmptyStateSubtitle}>
                                 <b>Caution</b>: all content is generated from a large language model and must be checked by a human! <b>You</b> are responsible
@@ -549,7 +551,7 @@ const Chat = () => {
                         />
                     )} */}
 
-                    {/* <TextField
+                    <TextField
                         id={retrieveCountFieldId}
                         className={styles.chatSettingsSeparator}
                         label="Retrieve this many search results:"
@@ -562,7 +564,7 @@ const Chat = () => {
                         onRenderLabel={(props: ITextFieldProps | undefined) => (
                             <HelpCallout labelId={retrieveCountId} fieldId={retrieveCountFieldId} helpText={toolTipText.retrieveNumber} label={props?.label} />
                         )}
-                    /> */}
+                    />
 
                     <Dropdown
                         id={includeDomainFieldId}

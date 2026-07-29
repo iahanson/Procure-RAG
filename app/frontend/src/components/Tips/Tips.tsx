@@ -32,6 +32,18 @@ export const Tips = () => {
                     </a>{" "}
                 </li>
             </ul>
+            <ul className={styles.tipsText}>
+                <li>
+                    List of included{" "}
+                    <a
+                        href="https://officesharedservice.sharepoint.com/:b:/r/sites/RBKCAIHub/Shared%20Documents/Procurement%20Knowledge%20Base.pdf?csf=1&web=1&e=QMooq3"
+                        target="_blank"
+                    >
+                        documents
+                    </a>{" "}
+                    in the knowledge base for this app
+                </li>
+            </ul>
         </div>
     );
 };

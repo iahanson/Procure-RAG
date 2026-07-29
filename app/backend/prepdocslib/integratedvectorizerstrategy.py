@@ -1,21 +1,19 @@
 import logging
 from typing import Optional
 
-from azure.search.documents.indexes._generated.models import (
-    NativeBlobSoftDeleteDeletionDetectionPolicy,
-)
 from azure.search.documents.indexes.models import (
     AzureOpenAIEmbeddingSkill,
-    AzureOpenAIParameters,
     AzureOpenAIVectorizer,
+    AzureOpenAIVectorizerParameters,
     FieldMapping,
     IndexProjectionMode,
     InputFieldMappingEntry,
+    NativeBlobSoftDeleteDeletionDetectionPolicy,
     OutputFieldMappingEntry,
     SearchIndexer,
     SearchIndexerDataContainer,
     SearchIndexerDataSourceConnection,
-    SearchIndexerIndexProjections,
+    SearchIndexerIndexProjection,
     SearchIndexerIndexProjectionSelector,
     SearchIndexerIndexProjectionsParameters,
     SearchIndexerSkillset,
@@ -86,15 +84,15 @@ class IntegratedVectorizerStrategy(Strategy):
         embedding_skill = AzureOpenAIEmbeddingSkill(
             description="Skill to generate embeddings via Azure OpenAI",
             context="/document/pages/*",
-            resource_uri=f"https://{self.embeddings.open_ai_service}.openai.azure.com",
-            deployment_id=self.embeddings.open_ai_deployment,
+            resource_url=f"https://{self.embeddings.open_ai_service}.openai.azure.com",
+            deployment_name=self.embeddings.open_ai_deployment,
             inputs=[
                 InputFieldMappingEntry(name="text", source="/document/pages/*"),
             ],
             outputs=[OutputFieldMappingEntry(name="embedding", target_name="vector")],
         )
 
-        index_projections = SearchIndexerIndexProjections(
+        index_projections = SearchIndexerIndexProjection(
             selectors=[
                 SearchIndexerIndexProjectionSelector(
                     target_index_name=index_name,
@@ -116,7 +114,7 @@ class IntegratedVectorizerStrategy(Strategy):
             name=skillset_name,
             description="Skillset to chunk documents and generate embeddings",
             skills=[split_skill, embedding_skill],
-            index_projections=index_projections,
+            index_projection=index_projections,
         )
 
         return skillset
@@ -137,11 +135,11 @@ class IntegratedVectorizerStrategy(Strategy):
         await search_manager.create_index(
             vectorizers=[
                 AzureOpenAIVectorizer(
-                    name=f"{self.search_info.index_name}-vectorizer",
+                    vectorizer_name=f"{self.search_info.index_name}-vectorizer",
                     kind="azureOpenAI",
-                    azure_open_ai_parameters=AzureOpenAIParameters(
-                        resource_uri=f"https://{self.embeddings.open_ai_service}.openai.azure.com",
-                        deployment_id=self.embeddings.open_ai_deployment,
+                    parameters=AzureOpenAIVectorizerParameters(
+                        resource_url=f"https://{self.embeddings.open_ai_service}.openai.azure.com",
+                        deployment_name=self.embeddings.open_ai_deployment,
                     ),
                 ),
             ]
