@@ -52,11 +52,42 @@ Updated documents - need a method for automating checks for updaing documents in
 
 ## Deploy application
 
-1. Follow the process document for deploying RAG applications to Azure to set up appropriate cloud infrasctucture 
-2. Ensure that you have an Azure environment - run <azd env init> to initialise an env.  This will create a .azure folder with a .env file.  Populate the .env file with appropriate variables.
-3. run <azd package> to package all the software requirements
-4. run <azd provision> to create virtual python env in the docker container and run data processing files.  This command will provision all infrastructure if there are any bicep files, but the current repo only has a blank main.bicep.  All data in the /data folder will be processed, embeddings created, ingested into the seach index and uploaded to blob storage
-5. run <azd deploy> to deploy codebase to exisiting web service in Azure
+### Prerequisites (Docker-free)
+
+- **Python 3.12** (this repo targets 3.12; the `cs-rag` conda env is the canonical dev env).
+- **Node.js >= 22.12** (24.x LTS works).
+- **Azure Developer CLI (`azd`)**.
+- **Windows: Long Paths enabled** in the registry (`HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\LongPathsEnabled = 1`), reboot required. This is needed by `msgraph-sdk`, which has file paths exceeding the legacy 260-char limit.
+
+### Local development
+
+```powershell
+# From the repo root
+conda activate cs-rag
+pip install -r app\backend\requirements.txt
+
+cd app\frontend
+npm install
+npm run build   # writes bundle to ../backend/static
+
+cd ..\..
+.\scripts\verify.ps1   # optional: runs backend pytest + frontend build
+```
+
+Backend is served by Quart via `app\start.ps1` (which populates env from `azd env`).
+
+### Deploying to Azure (no Docker)
+
+1. Follow the process document for provisioning Azure infrastructure (Search, OpenAI, App Service, Storage, etc.).
+2. `azd env new <name>` (or `azd env select <name>` if already created). Populate the `.env` file with the required variables.
+3. `azd auth login`
+4. `azd up` — this will (a) provision any Bicep in `infra/` (currently minimal, infra is managed out-of-band), (b) run the `prepackage` hook that builds the frontend, (c) deploy the backend to App Service (Oryx build, **no Docker**), and (d) run the `postprovision` hooks that call `scripts\auth_update.ps1` and `scripts\prepdocs.ps1` to ingest documents from `/data` into the search index.
+5. For code-only redeploys: `azd deploy`.
+6. To ingest new documents without redeploying, run `scripts\prepdocs.ps1` directly (requires a valid `azd env`).
+
+### Legacy: Docker / Codespaces
+
+A `Dockerfile` and `.devcontainer/` are retained in the repo for users who prefer that flow, but they are **not** required for local dev or `azd` deploy. See `MODERNIZATION_NOTES.md` for the deliberate decisions.
 
 ## Future Additions 🔮
 

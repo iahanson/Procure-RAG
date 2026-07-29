@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useContext, useEffect, useRef, useState } from "react";
 //import { Helmet } from "react-helmet-async";
 //import { Checkbox, Panel, DefaultButton, Spinner, TextField, ICheckboxProps, ITextFieldProps } from "@fluentui/react";
@@ -34,7 +35,7 @@ import { useMsal } from "@azure/msal-react";
 import { TokenClaimsDisplay } from "../../components/TokenClaimsDisplay";
 import { LoginContext } from "../../loginContext";
 
-export function Component(): JSX.Element {
+export function Component(): React.JSX.Element {
     const [isConfigPanelOpen, setIsConfigPanelOpen] = useState(false);
     const [promptTemplate, setPromptTemplate] = useState<string>("");
     const [promptTemplatePrefix, setPromptTemplatePrefix] = useState<string>("");
