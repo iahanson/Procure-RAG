@@ -1,5 +1,4 @@
 import { Spinner, SpinnerSize, MessageBar, MessageBarType, Link, IconButton } from "@fluentui/react";
-import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -14,7 +13,6 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ src }) => {
     const [content, setContent] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<Error | null>(null);
-    const { t } = useTranslation();
 
     /**
      * Anchor links result in HTTP 404 errors as the URL they point to does not exist.
@@ -68,8 +66,8 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ src }) => {
                         className={styles.downloadButton}
                         style={{ color: "black" }}
                         iconProps={{ iconName: "Save" }}
-                        title={t("tooltips.save")}
-                        ariaLabel={t("tooltips.save")}
+                        title={"Save"}
+                        ariaLabel={"Save"}
                         href={src}
                         download
                     />
