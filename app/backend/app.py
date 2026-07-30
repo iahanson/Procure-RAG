@@ -537,7 +537,8 @@ async def setup_clients():
             if not AZURE_OPENAI_SERVICE:
                 raise ValueError("AZURE_OPENAI_SERVICE must be set when OPENAI_HOST is azure")
             endpoint = f"https://{AZURE_OPENAI_SERVICE}.openai.azure.com"
-        if api_key := os.getenv("AZURE_OPENAI_API_KEY"):
+        api_key = os.getenv("AZURE_OPENAI_API_KEY")
+        if api_key:
             openai_client = AsyncAzureOpenAI(api_version=api_version, azure_endpoint=endpoint, api_key=api_key)
         else:
             token_provider = get_bearer_token_provider(azure_credential, "https://cognitiveservices.azure.com/.default")
